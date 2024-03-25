@@ -14,7 +14,7 @@ public class TaxiCar {
     private BigDecimal rateDay;
     @Value("${taxi.rate_night}")
     private BigDecimal rateNight;
-    private String numberAuto;
+    private final String numberAuto;
     private BigDecimal earnings = BigDecimal.ZERO;
 
     public TaxiCar(String numberAuto) {
@@ -22,11 +22,13 @@ public class TaxiCar {
     }
 
     public BigDecimal acceptOrder(Client client, Time time) throws Exception {
+        String exceptionString = "Ошибка расчета тарификации. Адрес отсутствует в тарифной сетке.";
         BigDecimal currentRate = (time == Time.DAY) ? rateDay : rateNight;
-        int tariffDistance = Arrays.stream(TariffSchedule.values())
+        int tariffDistance = Arrays.stream(Rater.values())
                 .filter(e -> e.getAddress().equals(client.getAddress()))
                 .findFirst()
-                .orElseThrow(() -> new Exception("Ошибка расчета тарификации. Адрес отсутствует в тарифной сетке.")).getDistance();
+                .orElseThrow(() -> new Exception(exceptionString))
+                .getDistance();
         BigDecimal totalEarnings = currentRate.multiply(BigDecimal.valueOf(tariffDistance));
         BigDecimal currentEarnings = totalEarnings.divide(BigDecimal.valueOf(2));
         earnings = earnings.add(currentEarnings);

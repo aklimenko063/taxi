@@ -2,7 +2,6 @@ package org.javaacademy.taxi.park;
 
 import jakarta.annotation.PreDestroy;
 import lombok.Getter;
-import lombok.Setter;
 import org.javaacademy.taxi.Client;
 import org.javaacademy.taxi.Time;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,7 @@ public class TaxiCompany {
     @Value("${taxi.name}")
     private String name;
     @Getter
-    private Queue<TaxiCar> taxiCars = new LinkedList<>();
+    private final Queue<TaxiCar> taxiCars = new LinkedList<>();
     private BigDecimal earnings = BigDecimal.ZERO;
 
     @PreDestroy
