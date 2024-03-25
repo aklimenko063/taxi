@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: taxi
+
+taxi:
+  name: Taxi
