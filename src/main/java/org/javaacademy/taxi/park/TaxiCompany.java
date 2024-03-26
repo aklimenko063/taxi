@@ -2,6 +2,7 @@ package org.javaacademy.taxi.park;
 
 import jakarta.annotation.PreDestroy;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.javaacademy.taxi.Client;
 import org.javaacademy.taxi.Time;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 @Component
+@Slf4j
 public class TaxiCompany {
     @Value("${taxi.name}")
     private String name;
@@ -27,7 +29,7 @@ public class TaxiCompany {
 
     public void acceptOrder(Client client, Time time) {
         if (taxiCars.isEmpty()) {
-            System.out.println("В таксопарке нет машин.");
+            log.error("В таксопарке нет машин.");
         } else {
             try {
                 TaxiCar taxiCar = taxiCars.peek();
@@ -35,7 +37,7 @@ public class TaxiCompany {
                 changeQueueTaxiCar();
                 earnings = earnings.add(currentEarnings);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
     }
